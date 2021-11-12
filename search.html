@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KHANA MANGAO</title>
+   <style>
+      #foods{
+        margin:auto;
+        margin-left: 13%;
+       }
+.Raj {
+    margin:auto;display: inline-block;overflow: hidden;
+}
+img{width:70%;height: 350px;}
+
+   </style>
+</head>
+
+<link rel="stylesheet" href="styles/styles.css"/>
+
+
+<body>
+  
+<div id="navbar">   </div>
+
+
+
+  <input type="text" id="input" placeholder=" Search for Dishes" name="search">
+  <button onclick="dd()">Search</button>
+</form>
+<div id="foods"></div>
+
+</body>
+</html>
+
+<script type="module">
+    import navbar from "./component/navbar.js"
+    let navbar_div = document.getElementById("navbar") 
+    navbar_div.innerHTML = navbar()
+      
+</script>
+
+<script>
+    var foods = document.getElementById("foods");
+    async function dd() {
+        var myInput = document.getElementById("input").value
+       console.log(myInput);
+        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${myInput}`)
+        let data = await res.json();
+    
+        var z = data.meals
+       console.log(z);
+        // for(var i = 0 ;i < z.length; i++){
+        //     // console.log(z[i].strMeal);
+        //     var name = z[i].strMeal
+        //     var recipe = z[i].strArea
+        // }
+        if(data.meals == undefined) {
+            foods.innerHTML = null;
+        var div = document.createElement("div");
+        var img = document.createElement("img");
+        img.src = "https://res.cloudinary.com/swiggy/image/upload/fl_lossy,f_auto,q_auto/empty-plate_fdc3wq"
+        img.style.width = "150px";
+        img.style.height = "150px"
+        img.style.marginLeft = "40%"
+        var h2 = document.createElement("h2");
+        h2.innerHTML = "Oh! There’s not much left"
+        h2.style.textAlign = "center";
+        var p1 = document.createElement("p");
+        p1.innerHTML = "We can’t find anything related to your search."
+        p1.style.textAlign = "center";
+        var p2 = document.createElement("p");
+        p2.innerHTML = "Try a different search."
+        p2.style.textAlign = "center";
+
+        foods.append(img,h2,p1,p2)
+    } else {return appendVideo(z)}
+    }
+// dd()
+
+function appendVideo(Video_data) {
+    foods.innerHTML = null;
+
+        Video_data.forEach(everything => {
+        
+            let div = document.createElement("div");
+            div.className = "Raj"
+            
+
+            let cuisine = document.createElement("p");
+            cuisine.className += "Cuisine"
+            cuisine.innerHTML = "Cuisine:- "+ everything.strArea;
+
+            let name = document.createElement("h1")
+            name.innerHTML = everything.strMeal
+            div.onclick = function() {
+                localStorage.setItem("name",JSON.stringify(everything.strMeal))
+
+                 window.location.href = "recipe.html"
+            }
+            var image = document.createElement("img")
+            image.src = everything.strMealThumb
+
+            let category = document.createElement("p");
+            category.className += "category"
+            category.innerHTML = "Category :- " +everything.strCategory;
+    
+
+            let source = document.createElement("p");
+            source.innerHTML = "Source:- " + everything.strSource;
+          
+            div.append(image,name,cuisine,category);
+            foods.append(div)
+        });
+        
+    }
+    
+
+
+</script>

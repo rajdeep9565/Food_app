@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latest Recipe</title>
+   <style>
+       .items{display:inline-block;margin-left:2%;}
+        .picture{width:100%;height: 100px;}
+
+   </style>
+</head>
+
+<link rel="stylesheet" href="styles/styles.css"/>
+<body>
+  
+    <div id="navbar"></div>
+    <p id="company">HUNGER SWIPE</p>
+<p class = "tag">You Hunger partner</p>
+    <div id="foods"></div>
+    <div id="items"></div>
+
+</body>
+</html>
+
+<script type="module">
+    import navbar from "./component/navbar.js"
+    let navbar_div = document.getElementById("navbar") 
+    navbar_div.innerHTML = navbar()
+      
+</script>
+
+<script>
+ 
+var foods = document.getElementById("foods");
+    async function dd(){
+        // var myInput = document.getElementById("input").value
+    //    console.log(myInput);
+        let res = await fetch(`https://www.themealdb.com/api/json/v1/1/random.php`)
+        let data = await res.json();
+        //  console.log(data.meals[0].strMeal);
+        var z = data.meals
+       console.log(z);
+        // for(var i = 0 ;i < z.length; i++){
+        //     // console.log(z[i].strMeal);
+        //     var title = z[i].strMeal
+        //     var recipe = z[i].strArea
+        //     appending(title,recipe)
+        // }
+        appendVideo(z)
+    }
+dd()
+
+function appendVideo(Video_data) {
+        foods.innerHTML = null;
+        Video_data.forEach(everything => {
+
+            let ima = document.createElement("div")
+            ima.className += "ima";
+
+            let other = document.createElement("div")
+            other.className += "other"
+            
+            let cuisine = document.createElement("p");
+            cuisine.className += "cuisine"
+            cuisine.innerHTML = "Cuisine:- "+ everything.strArea;
+
+            let name = document.createElement("p")
+            name.className += "name"
+            name.innerHTML = everything.strMeal
+           
+            let image = document.createElement("img")
+            image.src = everything.strMealThumb
+
+            let link = document.createElement("p")
+            link.className += "link"
+            link.innerHTML = everything.strYoutube
+        
+            let category = document.createElement("p");
+            category.className += "category"
+            category.innerHTML = "Category :- " +everything.strCategory;
+    
+    
+            let inst = document.createElement("p")
+            inst.className += "inst"
+            inst.innerHTML ="Instruction:- " + everything.strInstructions;
+
+            let source = document.createElement("p")
+            source.className += "source"
+            source.innerHTML = "Source:- " + everything.strSource;
+         
+
+            let i1 = document.createElement("p")
+            i1.className += "i1"
+            i1.innerHTML = "Ingredents :- "+ everything.strIngredient1 +", "+ everything.strIngredient2 + ", " + everything.strIngredient3 + ", " + everything.strIngredient4 + ", " + everything.strIngredient5 + ", " + everything.strIngredient6 + ", " + everything.strIngredient7 + ", " + everything.strIngredient8 + ", " + everything.strIngredient9 + ", " + everything.strIngredient10 + ", " + everything.strIngredient11 + ", " + everything.strIngredient12 + ", " + everything.strIngredient13 + ", " + everything.strIngredient14 + ", " + everything.strIngredient15 + ", " + everything.strIngredient16 ;
+           
+            ima.append(image)
+            other.append(name,cuisine,category,i1,inst,source,link);
+            foods.append(ima,other)
+
+
+        });
+        
+    }
+
+
+
+</script>
+</script>
